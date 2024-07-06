@@ -45,14 +45,10 @@ def upload_file():
         try:
             if not os.path.exists(filepath):
                 file.save(filepath)
-                print(f'File uploaded: {filename}')
-                print(f'File path: {filepath}')
-            result = classify_image(filepath)
-            return jsonify({'message': 'File successfully uploaded', 'result': result})
         except Exception as e:
             print(f'Error saving file: {e}')
             return jsonify({'message': 'Failed to save file', 'result': str(e)})
-
-
-
+        
+        return classify_image(filepath)
+        
     return jsonify({'message': 'Allowed file types are png, jpg, jpeg, gif', 'result': ''})
