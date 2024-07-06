@@ -8,7 +8,7 @@ import os
 
 _app = Blueprint('_app', __name__)
 
-UPLOAD_FOLDER = 'website/uploads'
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 @_app.route('/', methods=['GET', 'POST'])
@@ -31,10 +31,28 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
+        print(f'File name: {filename}')
         filepath = os.path.join(UPLOAD_FOLDER, filename)
-        file.save(filepath)
+        print(f'File path: {filepath}')
 
-        result = classify_image(filepath)
-        return jsonify({'message': 'File successfully uploaded', 'result': result})
+        if not os.path.exists(UPLOAD_FOLDER):
+            try:
+                os.makedirs(UPLOAD_FOLDER)
+            except OSError as e:
+                return jsonify({'message': 'Failed to create upload directory', 'result': str(e)})
+
+        
+        try:
+            if not os.path.exists(filepath):
+                file.save(filepath)
+                print(f'File uploaded: {filename}')
+                print(f'File path: {filepath}')
+            result = classify_image(filepath)
+            return jsonify({'message': 'File successfully uploaded', 'result': result})
+        except Exception as e:
+            print(f'Error saving file: {e}')
+            return jsonify({'message': 'Failed to save file', 'result': str(e)})
+
+
 
     return jsonify({'message': 'Allowed file types are png, jpg, jpeg, gif', 'result': ''})
