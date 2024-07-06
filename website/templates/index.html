@@ -1,3 +1,16 @@
-<div>
-    <div>Upload imageeeee</div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image</title>
+</head>
+<body>
+    <h2>Upload Image</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file"><br><br>
+        <input type="submit" value="Upload">
+    </form>
+    <div id="result"></div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
