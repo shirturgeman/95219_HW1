@@ -49,6 +49,8 @@ def upload_file():
             print(f'Error saving file: {e}')
             return jsonify({'message': 'Failed to save file', 'result': str(e)})
         
-        return classify_image(filepath)
+        question = request.form.get('question')
+
+        return classify_image(question, filepath)
         
     return jsonify({'message': 'Allowed file types are png, jpg, jpeg, gif', 'result': ''})
