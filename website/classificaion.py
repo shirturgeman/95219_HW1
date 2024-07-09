@@ -50,6 +50,14 @@ def classify_image(question, image_path):
         print(f'====> response.text: {response[0]}')
 
         return response[0]
+
+        # return template checked: 
+        """return(
+            {'result': {
+                'classification': 'cat',
+                'score': 10
+            }, 'image_path': image_path}
+        )"""
         
     except Exception as e:
         return jsonify({'message': 'Failed to classify image', 'result': str(e)})

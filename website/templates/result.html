@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Image Classification Result{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="image-container">
+        <img src="{{ image_path }}" alt="Uploaded Image" width="400">
+    </div>
+    <div class="result-container">
+        <h2>Classification Result</h2>
+        <p><strong>request_id:</strong> {{ request_id }}</p>
+        <p><strong>Answer:</strong> {{ result.classification }}</p>
+        <p><strong>Score:</strong> {{ result.score }}</p>
+    </div>
+</div>
+{% endblock %}
