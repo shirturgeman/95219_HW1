@@ -15,7 +15,6 @@ def create_app():
     DATABASE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), DB_NAME)
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static\\uploads')
     app.config['SQLALCHEMY_DATABASE_URI'] =f'sqlite:///{DATABASE_PATH}'
-    app.config['SERVER_NAME'] = 'localhost.localdomain'
     db.init_app(app)
 
     from .auth import auth
