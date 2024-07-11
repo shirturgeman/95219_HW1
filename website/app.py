@@ -1,9 +1,9 @@
-from flask import Blueprint, redirect, render_template, request, flash, jsonify, send_file, url_for
+from flask import Blueprint, redirect, render_template, request, flash, jsonify, send_file, url_for, send_from_directory
 from flask_login import login_required, current_user
 from . import db
 import json
 from werkzeug.utils import secure_filename
-from .classificaion import classify_image
+from website.classificaion import classify_image
 import os
 import time
 import random
@@ -16,7 +16,8 @@ request_results = {}
 
 _app = Blueprint('_app', __name__)
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static\\uploads')
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 @_app.context_processor
@@ -78,12 +79,17 @@ def upload_file():
 def get_result(request_id):
     # Fetch the result from the mock storage
     result_data = request_results.get(request_id)
-    if not result_data:
+    try:
+        result = result_data['result']
+    except Exception as e:
         return jsonify({'error': {'code': 404, 'message': 'ID not found'}}), 404
     
     result = result_data['result']
     image_path = result_data['image_path']
 
+    filename = image_path.split(UPLOAD_FOLDER + '\\')[1]
+    print("8****")
+    print(filename)
     # Render the result.html template with result and image_path
     return render_template('result.html', request_id=request_id, result=result, image_path=image_path)
 
